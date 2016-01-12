@@ -1,0 +1,9 @@
+# Server
+ServerPort: 8090
+
+# Logging
+# Filename:   /var/log/bbb-client/client.log
+MaxSize:    500 # megabytes
+MaxBackups: 3
+MaxAge:     28 # days
+AllowedClients: ["flex3", "html5"]
