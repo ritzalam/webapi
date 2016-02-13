@@ -41,3 +41,19 @@ func sortMap(data map[string]string) map[string]string {
 
     return sorted
 }
+
+func replaceKeyword(message, keyword, newValue string) string {
+	return strings.Replace(message, keyword, newValue, -1)
+}
+
+func substituteKeywords(message, dialNumber, confNum, meetingName string) string {
+	DIAL_NUM := "%%DIALNUM%%"
+	CONF_NUM := "%%CONFNUM%%"
+	CONF_NAME := "%%CONFNAME%%"
+
+	message = replaceKeyword(message, DIAL_NUM, dialNumber)
+	message = replaceKeyword(message, CONF_NUM, confNum)
+	message = replaceKeyword(message, CONF_NAME, meetingName)
+
+	return message
+}

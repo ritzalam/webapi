@@ -2,6 +2,7 @@ package main
 
 import (
 	"testing"
+	"fmt"
 )
 
 
@@ -49,4 +50,18 @@ func TestSortMap(t *testing.T) {
 //	if keys != result {
 //		t.Error("Expected 16, got ", keys)
 //	}
+}
+
+func TestSubstituteKeywords(t *testing.T) {
+	dialNum := "6135551234"
+	confNum := "85115"
+	confName := "Demo Meeting"
+	welcome := "<br>Welcome to <b>%%CONFNAME%%</b>! DialNum=%%DIALNUM%% ConfNum=%%CONFNUM%%"
+	result := "<br>Welcome to <b>" + confName + "</b>! DialNum=" + dialNum + " ConfNum=" + confNum
+
+	newWelcome := substituteKeywords(welcome, dialNum, confNum, confName)
+	fmt.Println(newWelcome)
+	if result != newWelcome {
+		t.Error("Expected 16, got ", result)
+	}
 }
