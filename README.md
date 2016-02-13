@@ -38,12 +38,9 @@ go get github.com/spf13/viper
 go get github.com/jhoonb/archivex
 go get github.com/juju/loggo
 go get gopkg.in/natefinch/lumberjack.v2
+go get github.com/jchannon/negotiator
 ```
 
-* And finally run the build shell script
-```
-./build.sh
-```
 
 ### Usage
 

@@ -2,153 +2,141 @@ package main
 
 import (
 	"fmt"
-	"encoding/json"
-	"encoding/xml"
 	"net/http"
+	"github.com/jchannon/negotiator"
+	"encoding/xml"
+	"encoding/json"
 )
 
-
 func CreateApiHandler(writer http.ResponseWriter, request *http.Request) {
-	var apiresponse APIResponse
-	var err error
-
 	queryStr := request.URL.RawQuery
 	fmt.Println("Query string: " + queryStr)
+	var apiresponse Response
 	apiresponse.Status = "ok"
-	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+	apiresponse.Error = ""
+	//negotiator.Negotiate(writer, request, apiresponse)
+	MarshallResult(apiresponse, "json", writer, request, nil)
 }
 
 func JoinApiHandler(writer http.ResponseWriter, request *http.Request) {
-	var apiresponse APIResponse
-	var err error
-
 	queryStr := request.URL.RawQuery
 	fmt.Println("Query string: " + queryStr)
+	var apiresponse Response
 	apiresponse.Status = "ok"
-	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+	apiresponse.Error = ""
+	//negotiator.Negotiate(writer, request, apiresponse)
+	MarshallResult(apiresponse, "xml", writer, request, nil)
 }
 
 func IsMeetingRunningApiHandler(writer http.ResponseWriter, request *http.Request) {
-	var apiresponse APIResponse
-	var err error
-
 	queryStr := request.URL.RawQuery
 	fmt.Println("Query string: " + queryStr)
+	var apiresponse Response
 	apiresponse.Status = "ok"
-	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+	apiresponse.Error = ""
+	negotiator.Negotiate(writer, request, apiresponse)
 }
 
 func GetMeetingInfoApiHandler(writer http.ResponseWriter, request *http.Request) {
-	var apiresponse APIResponse
-	var err error
-
 	queryStr := request.URL.RawQuery
 	fmt.Println("Query string: " + queryStr)
+	var apiresponse Response
 	apiresponse.Status = "ok"
-	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+	apiresponse.Error = ""
+	negotiator.Negotiate(writer, request, apiresponse)
 }
 
 func EndApiHandler(writer http.ResponseWriter, request *http.Request) {
-	var apiresponse APIResponse
-	var err error
-
 	queryStr := request.URL.RawQuery
 	fmt.Println("Query string: " + queryStr)
+	var apiresponse Response
 	apiresponse.Status = "ok"
-	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+	apiresponse.Error = ""
+	negotiator.Negotiate(writer, request, apiresponse)
 }
 
 func GetMeetingsApiHandler(writer http.ResponseWriter, request *http.Request) {
-	var apiresponse APIResponse
-	var err error
-
 	queryStr := request.URL.RawQuery
 	fmt.Println("Query string: " + queryStr)
+	var apiresponse Response
 	apiresponse.Status = "ok"
-	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+	apiresponse.Error = ""
+	negotiator.Negotiate(writer, request, apiresponse)
 }
 
 func GetDefaultConfigXMLApiHandler(writer http.ResponseWriter, request *http.Request) {
-	var apiresponse APIResponse
-	var err error
-
 	queryStr := request.URL.RawQuery
 	fmt.Println("Query string: " + queryStr)
+	var apiresponse Response
 	apiresponse.Status = "ok"
-	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+	apiresponse.Error = ""
+	negotiator.Negotiate(writer, request, apiresponse)
 }
 
 func SetConfigXMLApiHandler(writer http.ResponseWriter, request *http.Request) {
-	var apiresponse APIResponse
-	var err error
-
 	queryStr := request.URL.RawQuery
 	fmt.Println("Query string: " + queryStr)
+	var apiresponse Response
 	apiresponse.Status = "ok"
-	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+	apiresponse.Error = ""
+	negotiator.Negotiate(writer, request, apiresponse)
 }
 
 func EnterApiHandler(writer http.ResponseWriter, request *http.Request) {
-	var apiresponse APIResponse
-	var err error
-
 	queryStr := request.URL.RawQuery
 	fmt.Println("Query string: " + queryStr)
+	var apiresponse Response
 	apiresponse.Status = "ok"
-	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+	apiresponse.Error = ""
+	negotiator.Negotiate(writer, request, apiresponse)
 }
 
 func ConfigXMLApiHandler(writer http.ResponseWriter, request *http.Request) {
-	var apiresponse APIResponse
-	var err error
-
 	queryStr := request.URL.RawQuery
 	fmt.Println("Query string: " + queryStr)
+	var apiresponse Response
 	apiresponse.Status = "ok"
-	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+	apiresponse.Error = ""
+	negotiator.Negotiate(writer, request, apiresponse)
 }
 
 func SignOutApiHandler(writer http.ResponseWriter, request *http.Request) {
-	var apiresponse APIResponse
-	var err error
-
 	queryStr := request.URL.RawQuery
 	fmt.Println("Query string: " + queryStr)
+	var apiresponse Response
 	apiresponse.Status = "ok"
-	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+	apiresponse.Error = ""
+	negotiator.Negotiate(writer, request, apiresponse)
 }
 
 func GetRecordingsApiHandler(writer http.ResponseWriter, request *http.Request) {
-	var apiresponse APIResponse
-	var err error
-
 	queryStr := request.URL.RawQuery
 	fmt.Println("Query string: " + queryStr)
+	var apiresponse Response
 	apiresponse.Status = "ok"
-	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+	apiresponse.Error = ""
+	negotiator.Negotiate(writer, request, apiresponse)
 }
 
 func PublishRecordingsApiHandler(writer http.ResponseWriter, request *http.Request) {
-	var apiresponse APIResponse
-	var err error
-
 	queryStr := request.URL.RawQuery
 	fmt.Println("Query string: " + queryStr)
+	var apiresponse Response
 	apiresponse.Status = "ok"
-	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+	apiresponse.Error = ""
+	negotiator.Negotiate(writer, request, apiresponse)
 }
 
 func DeleteRecordingsApiHandler(writer http.ResponseWriter, request *http.Request) {
-	var apiresponse APIResponse
-	var err error
-
 	queryStr := request.URL.RawQuery
 	fmt.Println("Query string: " + queryStr)
+	var apiresponse Response
 	apiresponse.Status = "ok"
-	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+	apiresponse.Error = ""
+	negotiator.Negotiate(writer, request, apiresponse)
 }
 
-func MarshallResult(apiresponse APIResponse, marshall string, writer http.ResponseWriter, request *http.Request, err error) {
+func MarshallResult(apiresponse Response, marshall string, writer http.ResponseWriter, request *http.Request, err error) {
 	// Marshall the result and return it
 	var result []byte
 
@@ -168,3 +156,10 @@ func MarshallResult(apiresponse APIResponse, marshall string, writer http.Respon
 
 	writer.Write(result)
 }
+
+type Response struct {
+	XMLName xml.Name `json:"-"     xml:"response"`
+	Status  string   `json:"status" xml:"status"`
+	Error   string   `json:"error" xml:"error"`
+}
+  
