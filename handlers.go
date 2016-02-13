@@ -1,36 +1,150 @@
 package main
 
 import (
+	"fmt"
 	"encoding/json"
 	"encoding/xml"
 	"net/http"
-	"strings"
-	"github.com/gorilla/mux"
 )
 
-func LogHandler(writer http.ResponseWriter, request *http.Request) {
+
+func CreateApiHandler(writer http.ResponseWriter, request *http.Request) {
 	var apiresponse APIResponse
 	var err error
 
-	// Route URL
-	vars := mux.Vars(request)
-	client := vars["client"]
-	meetingid := vars["meetingid"]
-	userid := vars["userid"]
+	queryStr := request.URL.RawQuery
+	fmt.Println("Query string: " + queryStr)
+	apiresponse.Status = "ok"
+	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+}
 
-	// POST variables
-	message := request.FormValue("message")
-	message = strings.TrimSpace(message)
+func JoinApiHandler(writer http.ResponseWriter, request *http.Request) {
+	var apiresponse APIResponse
+	var err error
 
-	// Check variable validity
-	if CheckVars(client, message, meetingid, userid) {
-		_, err = WriteToLogFile(client, meetingid, userid, message, request.RemoteAddr)
-		apiresponse.Error = "nil"
-		apiresponse.Status = "ok"
-	} else {
-		apiresponse.Status = "error"
-	}
+	queryStr := request.URL.RawQuery
+	fmt.Println("Query string: " + queryStr)
+	apiresponse.Status = "ok"
+	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+}
 
+func IsMeetingRunningApiHandler(writer http.ResponseWriter, request *http.Request) {
+	var apiresponse APIResponse
+	var err error
+
+	queryStr := request.URL.RawQuery
+	fmt.Println("Query string: " + queryStr)
+	apiresponse.Status = "ok"
+	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+}
+
+func GetMeetingInfoApiHandler(writer http.ResponseWriter, request *http.Request) {
+	var apiresponse APIResponse
+	var err error
+
+	queryStr := request.URL.RawQuery
+	fmt.Println("Query string: " + queryStr)
+	apiresponse.Status = "ok"
+	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+}
+
+func EndApiHandler(writer http.ResponseWriter, request *http.Request) {
+	var apiresponse APIResponse
+	var err error
+
+	queryStr := request.URL.RawQuery
+	fmt.Println("Query string: " + queryStr)
+	apiresponse.Status = "ok"
+	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+}
+
+func GetMeetingsApiHandler(writer http.ResponseWriter, request *http.Request) {
+	var apiresponse APIResponse
+	var err error
+
+	queryStr := request.URL.RawQuery
+	fmt.Println("Query string: " + queryStr)
+	apiresponse.Status = "ok"
+	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+}
+
+func GetDefaultConfigXMLApiHandler(writer http.ResponseWriter, request *http.Request) {
+	var apiresponse APIResponse
+	var err error
+
+	queryStr := request.URL.RawQuery
+	fmt.Println("Query string: " + queryStr)
+	apiresponse.Status = "ok"
+	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+}
+
+func SetConfigXMLApiHandler(writer http.ResponseWriter, request *http.Request) {
+	var apiresponse APIResponse
+	var err error
+
+	queryStr := request.URL.RawQuery
+	fmt.Println("Query string: " + queryStr)
+	apiresponse.Status = "ok"
+	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+}
+
+func EnterApiHandler(writer http.ResponseWriter, request *http.Request) {
+	var apiresponse APIResponse
+	var err error
+
+	queryStr := request.URL.RawQuery
+	fmt.Println("Query string: " + queryStr)
+	apiresponse.Status = "ok"
+	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+}
+
+func ConfigXMLApiHandler(writer http.ResponseWriter, request *http.Request) {
+	var apiresponse APIResponse
+	var err error
+
+	queryStr := request.URL.RawQuery
+	fmt.Println("Query string: " + queryStr)
+	apiresponse.Status = "ok"
+	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+}
+
+func SignOutApiHandler(writer http.ResponseWriter, request *http.Request) {
+	var apiresponse APIResponse
+	var err error
+
+	queryStr := request.URL.RawQuery
+	fmt.Println("Query string: " + queryStr)
+	apiresponse.Status = "ok"
+	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+}
+
+func GetRecordingsApiHandler(writer http.ResponseWriter, request *http.Request) {
+	var apiresponse APIResponse
+	var err error
+
+	queryStr := request.URL.RawQuery
+	fmt.Println("Query string: " + queryStr)
+	apiresponse.Status = "ok"
+	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+}
+
+func PublishRecordingsApiHandler(writer http.ResponseWriter, request *http.Request) {
+	var apiresponse APIResponse
+	var err error
+
+	queryStr := request.URL.RawQuery
+	fmt.Println("Query string: " + queryStr)
+	apiresponse.Status = "ok"
+	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
+}
+
+func DeleteRecordingsApiHandler(writer http.ResponseWriter, request *http.Request) {
+	var apiresponse APIResponse
+	var err error
+
+	queryStr := request.URL.RawQuery
+	fmt.Println("Query string: " + queryStr)
+	apiresponse.Status = "ok"
 	MarshallResult(apiresponse, request.URL.Query().Get("marshall"), writer, request, err)
 }
 

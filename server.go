@@ -68,5 +68,5 @@ func main() {
 	// Init(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr)
 
 	// Start the HTTP server
-	log.Fatal(http.ListenAndServe(":"+viper.GetString("ServerPort"), router))
+	log.Fatal(http.ListenAndServe(":" + viper.GetString("ServerPort"), router))
 }
