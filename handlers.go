@@ -17,11 +17,23 @@ func CreateApiHandler(writer http.ResponseWriter, request *http.Request) {
         fmt.Println("Key:", k, "Value:", params[k])
     }
 
-	var apiresponse Response
-	apiresponse.Status = "ok"
-	apiresponse.Error = ""
-	//negotiator.Negotiate(writer, request, apiresponse)
-	MarshallResult(apiresponse, "json", writer, request, nil)
+	var apiResponse ApiMeetingResponse 
+	apiResponse.ReturnCode = "ok" 
+	apiResponse.MeetingId  = "meeting_id"    
+	apiResponse.AttendeePW  = "ap"     
+	apiResponse.ModeratorPW  = "mp"   
+	apiResponse.CreateTime   = "create time"    
+	apiResponse.VoiceBridge  = "voice bridge"    
+	apiResponse.DialNumber   = "dial number"    
+	apiResponse.CreateDate   = "create date"   
+	apiResponse.HasUserJoined = "has user joined"   
+	apiResponse.Duration      = "duration"   
+	apiResponse.HasBeenForciblyEnded = "has been forcibly ended"
+	apiResponse.MessageKey    = "message key"   
+	apiResponse.Message       = "message"   
+
+	//negotiator.Negotiate(writer, request, apiResponse)
+	MarshallResult(apiResponse, "xml", writer, request, nil)
 }
 
 func JoinApiHandler(writer http.ResponseWriter, request *http.Request) {
@@ -29,7 +41,7 @@ func JoinApiHandler(writer http.ResponseWriter, request *http.Request) {
 	fmt.Println("Query string: " + queryStr)
 
 	
-	var apiresponse InvalidResponse
+	var apiresponse ApiInvalidResponse
 	apiresponse.ReturnCode = "ok"
 	apiresponse.MessageKey = "message key"
 	apiresponse.Message = "message message"
@@ -40,19 +52,28 @@ func JoinApiHandler(writer http.ResponseWriter, request *http.Request) {
 func IsMeetingRunningApiHandler(writer http.ResponseWriter, request *http.Request) {
 	queryStr := request.URL.RawQuery
 	fmt.Println("Query string: " + queryStr)
-	var apiresponse Response
-	apiresponse.Status = "ok"
-	apiresponse.Error = ""
-	negotiator.Negotiate(writer, request, apiresponse)
+	var apiResponse ApiInvalidResponse
+	apiResponse.ReturnCode = "ok"	 
+	apiResponse.MessageKey = "invalid param"
+	apiResponse.Message    = "Invalid parameter"  
+	negotiator.Negotiate(writer, request, apiResponse)
 }
 
 func GetMeetingInfoApiHandler(writer http.ResponseWriter, request *http.Request) {
 	queryStr := request.URL.RawQuery
 	fmt.Println("Query string: " + queryStr)
-	var apiresponse Response
-	apiresponse.Status = "ok"
-	apiresponse.Error = ""
-	negotiator.Negotiate(writer, request, apiresponse)
+	var error1 ApiError 
+	error1.Key = "error_1"
+	error1.Message = "error 1 message"
+	var error2 ApiError 
+	error2.Key = "error_2"
+	error2.Message = "error 2 message"
+
+	errors := []ApiError{error1, error2}
+	var apiResponse ApiErrorResponse
+	apiResponse.ReturnCode = "ok"
+	apiResponse.Errors = errors
+	negotiator.Negotiate(writer, request, apiResponse)
 }
 
 func EndApiHandler(writer http.ResponseWriter, request *http.Request) {
@@ -76,10 +97,10 @@ func GetMeetingsApiHandler(writer http.ResponseWriter, request *http.Request) {
 func GetDefaultConfigXMLApiHandler(writer http.ResponseWriter, request *http.Request) {
 	queryStr := request.URL.RawQuery
 	fmt.Println("Query string: " + queryStr)
-	var apiresponse Response
-	apiresponse.Status = "ok"
-	apiresponse.Error = ""
-	negotiator.Negotiate(writer, request, apiresponse)
+	var apiResponse Response
+	apiResponse.Status = "ok"
+	apiResponse.Error = ""
+	negotiator.Negotiate(writer, request, apiResponse)
 }
 
 func SetConfigXMLApiHandler(writer http.ResponseWriter, request *http.Request) {
@@ -145,7 +166,7 @@ func DeleteRecordingsApiHandler(writer http.ResponseWriter, request *http.Reques
 	negotiator.Negotiate(writer, request, apiresponse)
 }
 
-func MarshallResult(apiresponse Response, marshall string, writer http.ResponseWriter, request *http.Request, err error) {
+func MarshallResult(apiresponse ApiMeetingResponse, marshall string, writer http.ResponseWriter, request *http.Request, err error) {
 	// Marshall the result and return it
 	var result []byte
 
@@ -166,21 +187,4 @@ func MarshallResult(apiresponse Response, marshall string, writer http.ResponseW
 	writer.Write(result)
 }
 
-type Response struct {
-	XMLName          xml.Name       `json:"-" xml:"response"`
-	Status           string         `json:"status" xml:"status"`
-	Error            string         `json:"error" xml:"error"`
-}
 
-type ErrorResponse struct {
-	XMLName          xml.Name       `json:"-"     xml:"response"`
-	Status           string         `json:"status" xml:"status"`
-	Error            string         `json:"error" xml:"error"`
-}
-
-type InvalidResponse struct {
-	XMLName         xml.Name    `json:"-" xml:"response"`
-	returncode      string 	    `json:"returncode" xml:"returncode"`	 
-	MessageKey      string      `json:"status" xml:"status"`
-	Message         string      `json:"error" xml:"error"`
-}
