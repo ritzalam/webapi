@@ -29,11 +29,12 @@ func JoinApiHandler(writer http.ResponseWriter, request *http.Request) {
 	fmt.Println("Query string: " + queryStr)
 
 	
-	var apiresponse Response
-	apiresponse.Status = "ok"
-	apiresponse.Error = ""
-	//negotiator.Negotiate(writer, request, apiresponse)
-	MarshallResult(apiresponse, "xml", writer, request, nil)
+	var apiresponse InvalidResponse
+	apiresponse.ReturnCode = "ok"
+	apiresponse.MessageKey = "message key"
+	apiresponse.Message = "message message"
+	negotiator.Negotiate(writer, request, apiresponse)
+	//MarshallResult(apiresponse, "xml", writer, request, nil)
 }
 
 func IsMeetingRunningApiHandler(writer http.ResponseWriter, request *http.Request) {
@@ -170,4 +171,16 @@ type Response struct {
 	Status  string   `json:"status" xml:"status"`
 	Error   string   `json:"error" xml:"error"`
 }
-  
+
+type ErrorResponse struct {
+	XMLName xml.Name `json:"-"     xml:"response"`
+	Status  string   `json:"status" xml:"status"`
+	Error   string   `json:"error" xml:"error"`
+}
+
+type InvalidResponse struct {
+	XMLName 		xml.Name 	`json:"-" xml:"response"`
+	ReturnCode 		string 		`json:"returncode" xml:"returncode"`	 
+	MessageKey  	string   	`json:"status" xml:"status"`
+	Message   		string   	`json:"error" xml:"error"`
+}
