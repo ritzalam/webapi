@@ -4,6 +4,9 @@ import "strings"
 import "crypto/sha1"
 import "fmt"
 import "sort"
+import "strconv"
+import "time"
+import "regexp"
 
 func stripChecksum(queryString, checksum string) string {
 	if (queryString != "" ) {
@@ -33,7 +36,6 @@ func sortMap(data map[string]string) map[string]string {
 
 	sorted := make(map[string]string)
 
-    // To perform the opertion you want
     for _, k := range keys {
         fmt.Println("Key:", k, "Value:", data[k])
         sorted[k] = data[k]
@@ -56,4 +58,49 @@ func substituteKeywords(message, dialNumber, confNum, meetingName string) string
 	message = replaceKeyword(message, CONF_NAME, meetingName)
 
 	return message
+}
+
+func generateInternalMeetingId(extMeetingId string) string {
+	now := Int64ToString(currentTimeMillis())
+	return convertToInternalMeetingId(extMeetingId) + "-" + now
+}
+
+func convertToInternalMeetingId(extMeetingId string) string {
+	extId := sha1.Sum([]byte(extMeetingId))
+	return fmt.Sprintf("%x", extId)
+}
+
+func Int64ToString(v int64) string {
+	return strconv.FormatInt(v, 10)
+}
+
+func currentTimeMillis() int64 {
+    return time.Now().UnixNano() / int64(time.Millisecond)
+}
+
+func stripMeta(param string) string {
+	return strings.Replace(param, "meta_", "", 1)
+}
+
+func isValid(meta string) bool {
+	match, err := regexp.MatchString("meta_[a-zA-Z][a-zA-Z0-9-]*$", meta)
+	if err != nil {
+		return false
+	}
+	return match
+}
+
+func processMetaParam(params map[string]string) map[string]string {
+    metas := make(map[string]string)
+    for key, _ := range params {
+        fmt.Println("Key:", key, "Value:", params[key])
+        if isValid(key) {
+        	// Need to lowercase to maintain backward compatibility with 0.81
+    		metaKey := strings.ToLower(stripMeta(key))
+    		fmt.Println("metaKey:", metaKey, "Value:", params[key])
+    		metas[metaKey] = params[key]
+        }
+    }
+
+    return metas
 }

@@ -11,6 +11,12 @@ import (
 func CreateApiHandler(writer http.ResponseWriter, request *http.Request) {
 	queryStr := request.URL.RawQuery
 	fmt.Println("Query string: " + queryStr)
+
+	params := request.URL.Query()
+	for k := range params {
+        fmt.Println("Key:", k, "Value:", params[k])
+    }
+
 	var apiresponse Response
 	apiresponse.Status = "ok"
 	apiresponse.Error = ""
@@ -21,6 +27,8 @@ func CreateApiHandler(writer http.ResponseWriter, request *http.Request) {
 func JoinApiHandler(writer http.ResponseWriter, request *http.Request) {
 	queryStr := request.URL.RawQuery
 	fmt.Println("Query string: " + queryStr)
+
+	
 	var apiresponse Response
 	apiresponse.Status = "ok"
 	apiresponse.Error = ""
