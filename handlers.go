@@ -167,20 +167,20 @@ func MarshallResult(apiresponse Response, marshall string, writer http.ResponseW
 }
 
 type Response struct {
-	XMLName xml.Name `json:"-"     xml:"response"`
-	Status  string   `json:"status" xml:"status"`
-	Error   string   `json:"error" xml:"error"`
+	XMLName          xml.Name       `json:"-" xml:"response"`
+	Status           string         `json:"status" xml:"status"`
+	Error            string         `json:"error" xml:"error"`
 }
 
 type ErrorResponse struct {
-	XMLName xml.Name `json:"-"     xml:"response"`
-	Status  string   `json:"status" xml:"status"`
-	Error   string   `json:"error" xml:"error"`
+	XMLName          xml.Name       `json:"-"     xml:"response"`
+	Status           string         `json:"status" xml:"status"`
+	Error            string         `json:"error" xml:"error"`
 }
 
 type InvalidResponse struct {
-	XMLName 		xml.Name 	`json:"-" xml:"response"`
-	ReturnCode 		string 		`json:"returncode" xml:"returncode"`	 
-	MessageKey  	string   	`json:"status" xml:"status"`
-	Message   		string   	`json:"error" xml:"error"`
+	XMLName         xml.Name    `json:"-" xml:"response"`
+	returncode      string 	    `json:"returncode" xml:"returncode"`	 
+	MessageKey      string      `json:"status" xml:"status"`
+	Message         string      `json:"error" xml:"error"`
 }
