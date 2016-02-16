@@ -6,7 +6,11 @@ import (
 	"github.com/jchannon/negotiator"
 	"encoding/xml"
 	"encoding/json"
+	"strings"
 )
+
+const RESP_CODE_SUCCESS = "SUCCESS"
+const RESP_CODE_FAILED = "FAILED"
 
 func CreateApiHandler(writer http.ResponseWriter, request *http.Request) {
 	queryStr := request.URL.RawQuery
@@ -17,6 +21,84 @@ func CreateApiHandler(writer http.ResponseWriter, request *http.Request) {
         fmt.Println("Key:", k, "Value:", params[k])
     }
 
+    // BEGIN - backward compatibility
+    if _, ok := params["checksum"]; !ok {
+		invalid("checksumError", "You did not pass the checksum security check", writer, request)
+		return
+	}
+
+    if _, ok := params["meetingID"]; ok {
+    	fmt.Println(params["meetingID"])
+    	meetingId := params["meetingID"]
+    	trimmedMeetingId := strings.TrimSpace(meetingId[0])
+    	if trimmedMeetingId == "" {
+ 			invalid("missingParamMeetingID", "Please do not pass a space only as meetingID.", writer, request)
+			return   		
+		} else {
+			fmt.Println("trimmedMeetingId=" + trimmedMeetingId)
+		}
+	} else {
+ 		invalid("missingParamMeetingID", "You must specify a meeting ID for the meeting.", writer, request)
+		return  		
+	}
+    // END - backward compatibility
+/*
+    if (! paramsProcessorUtil.isChecksumSame(API_CALL, params.checksum, request.getQueryString())) {
+      invalid("checksumError", "You did not pass the checksum security check")
+      return
+    }
+    // END - backward compatibility
+	
+    ApiErrors errors = new ApiErrors();
+    paramsProcessorUtil.processRequiredCreateParams(params, errors);
+
+    if (errors.hasErrors()) {
+      respondWithErrors(errors)
+      return
+    }
+            
+    // Do we agree with the checksum? If not, complain.
+    if (! paramsProcessorUtil.isChecksumSame(API_CALL, params.checksum, request.getQueryString())) {
+      errors.checksumError()
+      respondWithErrors(errors)
+      return
+    }
+      
+    // Translate the external meeting id into an internal meeting id.
+    String internalMeetingId = paramsProcessorUtil.convertToInternalMeetingId(params.meetingID);		
+    Meeting existing = meetingService.getNotEndedMeetingWithId(internalMeetingId);
+
+    if (existing != null) {
+      log.debug "Existing conference found"
+      Map<String, Object> updateParams = paramsProcessorUtil.processUpdateCreateParams(params);
+      if (existing.getViewerPassword().equals(params.get("attendeePW")) && existing.getModeratorPassword().equals(params.get("moderatorPW"))) {
+        paramsProcessorUtil.updateMeeting(updateParams, existing);
+        // trying to create a conference a second time, return success, but give extra info
+        // Ignore pre-uploaded presentations. We only allow uploading of presentation once.
+        //uploadDocuments(existing);
+        respondWithConference(existing, "duplicateWarning", "This conference was already in existence and may currently be in progress.");
+      } else {
+          // BEGIN - backward compatibility
+          invalid("idNotUnique", "A meeting already exists with that meeting ID.  Please use a different meeting ID.");
+          return;
+          // END - backward compatibility
+
+          // enforce meetingID unique-ness
+          errors.nonUniqueMeetingIdError()
+          respondWithErrors(errors)
+      } 
+      
+      return;    
+    }
+     
+    Meeting newMeeting = paramsProcessorUtil.processCreateParams(params);      
+
+    meetingService.createMeeting(newMeeting);
+    
+    // See if the request came with pre-uploading of presentation.
+    uploadDocuments(newMeeting);    
+    respondWithConference(newMeeting, null, null)
+*/
 	var apiResponse ApiMeetingResponse 
 	apiResponse.ReturnCode = "ok" 
 	apiResponse.MeetingId  = "meeting_id"    
@@ -32,8 +114,8 @@ func CreateApiHandler(writer http.ResponseWriter, request *http.Request) {
 	apiResponse.MessageKey    = "message key"   
 	apiResponse.Message       = "message"   
 
-	//negotiator.Negotiate(writer, request, apiResponse)
-	MarshallResult(apiResponse, "xml", writer, request, nil)
+	negotiator.Negotiate(writer, request, apiResponse)
+	//MarshallResult(apiResponse, "xml", writer, request, nil)
 }
 
 func JoinApiHandler(writer http.ResponseWriter, request *http.Request) {
@@ -187,4 +269,10 @@ func MarshallResult(apiresponse ApiMeetingResponse, marshall string, writer http
 	writer.Write(result)
 }
 
-
+func invalid(key, msg string, writer http.ResponseWriter, request *http.Request) {
+	var apiResponse ApiInvalidResponse
+	apiResponse.ReturnCode = RESP_CODE_FAILED	 
+	apiResponse.MessageKey = key
+	apiResponse.Message    = msg
+	negotiator.Negotiate(writer, request, apiResponse)
+}
